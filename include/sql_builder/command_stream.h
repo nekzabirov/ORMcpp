@@ -67,6 +67,10 @@ namespace nek::sql {
             return os_.str() + ";";
         }
 
+        [[nodiscard]] std::string str() const {
+            return os_.str();
+        }
+
         bool empty() const {
             return os_.str().empty();
         }

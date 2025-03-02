@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.22.1)
 project(sql_builder)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+include_directories(include/sql_builder)
+
 # Define a header-only library
 add_library(sql_builder INTERFACE)
 

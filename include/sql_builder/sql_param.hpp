@@ -14,7 +14,7 @@ namespace nek::sql {
     }
 
     inline std::string formatValue(const char *value) {
-        return {value};
+        return std::string("'") + value + "'";
     }
 
     template<>
