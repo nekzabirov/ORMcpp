@@ -8,102 +8,153 @@
 #include "command_stream.h"
 #include "parrams.hpp"
 #include "column.hpp"
+#include "conditional_stream.hpp"
 #include <algorithm>
 
-namespace nek::sql {
-class ExecutCommandStream final : public CommandStream {
-public:
-  explicit ExecutCommandStream() : CommandStream("") {}
+#include "sql.hpp"
 
-  static ExecutCommandStream insert(const std::string_view &table,
-                               const std::initializer_list<std::string_view> &columns) {
-    ExecutCommandStream stream;
+namespace nek::sql
+{
+  class ExecutCommandStream final : public CommandStream
+  {
+  public:
+    explicit ExecutCommandStream() : CommandStream("") {}
 
-    stream.os_ << "INSERT INTO " << table;
+    static ExecutCommandStream insert(const std::string_view &table,
+                                      const std::initializer_list<std::string_view> &columns)
+    {
+      ExecutCommandStream stream;
 
-    stream.os_ << " (";
+      stream.os_ << "INSERT INTO " << table;
 
-    for (auto it = columns.begin(); it != columns.end(); ++it) {
-      stream.os_ << *it;
-      if (std::next(it) != columns.end()) {
-        stream.os_ << ", ";
+      stream.os_ << " (";
+
+      for (auto it = columns.begin(); it != columns.end(); ++it)
+      {
+        stream.os_ << *it;
+        if (std::next(it) != columns.end())
+        {
+          stream.os_ << ", ";
+        }
       }
+
+      stream.os_ << ")";
+
+      return stream;
     }
 
-    stream.os_ << ")";
+    static ExecutCommandStream update(const std::string_view &table)
+    {
+      ExecutCommandStream stream;
 
-    return stream;
-  }
+      stream.os_ << "UPDATE " << table;
 
-  template<class... T>
-  ExecutCommandStream &&values(const T &... vals) {
-    os_ << " VALUES " << "(";
+      return stream;
+    }
 
-    bool isFirst = true;
+    template <class... T>
+    ExecutCommandStream &&values(const T &...vals)
+    {
+      os_ << " VALUES " << "(";
 
-    auto nAppend = [&isFirst, this](const std::string &key) {
-      if (!isFirst) {
-        os_ << ", ";
-      } else {
+      bool isFirst = true;
+
+      auto nAppend = [&isFirst, this](const std::string &key)
+      {
+        if (!isFirst)
+        {
+          os_ << ", ";
+        }
+        else
+        {
           isFirst = false;
-      }
-      os_ << key;
-    };
+        }
+        os_ << key;
+      };
 
-    (nAppend(formatValue(vals)), ...);
+      (nAppend(formatValue(vals)), ...);
 
-    os_ << ")";
+      os_ << ")";
 
-    return std::move(*this);
-  }
-
-  ExecutCommandStream &&returning(const std::initializer_list<std::string_view> &columns) {
-    os_ << " RETURNING ";
-
-    for (auto it = columns.begin(); it != columns.end(); ++it) {
-      os_ << *it;
-      if (std::next(it) != columns.end()) {
-        os_ << ", ";
-      }
+      return std::move(*this);
     }
 
-    return std::move(*this);
-  }
+    ExecutCommandStream &&returning(const std::initializer_list<std::string_view> &columns)
+    {
+      os_ << " RETURNING ";
 
-  ExecutCommandStream &&onConflict(const std::initializer_list<std::string_view> &columns) {
-    os_ << " ON CONFLICT (";
-
-    for (auto it = columns.begin(); it != columns.end(); ++it) {
-      os_ << *it;
-      if (std::next(it) != columns.end()) {
-        os_ << ", ";
+      for (auto it = columns.begin(); it != columns.end(); ++it)
+      {
+        os_ << *it;
+        if (std::next(it) != columns.end())
+        {
+          os_ << ", ";
+        }
       }
+
+      return std::move(*this);
     }
 
-    os_ << ")";
+    ExecutCommandStream &&onConflict(const std::initializer_list<std::string_view> &columns)
+    {
+      os_ << " ON CONFLICT (";
 
-    return std::move(*this);
-  }
-
-  ExecutCommandStream &&doUpdate() {
-    os_ << " DO UPDATE";
-
-    return std::move(*this);
-  }
-
-  ExecutCommandStream &&set(const std::initializer_list<Column> &columns) {
-    os_ << " SET ";
-
-    for (auto it = columns.begin(); it != columns.end(); ++it) {
-      os_ << it->str();
-      if (std::next(it) != columns.end()) {
-        os_ << ", ";
+      for (auto it = columns.begin(); it != columns.end(); ++it)
+      {
+        os_ << *it;
+        if (std::next(it) != columns.end())
+        {
+          os_ << ", ";
+        }
       }
+
+      os_ << ")";
+
+      return std::move(*this);
     }
 
-    return std::move(*this);
+    ExecutCommandStream &&doUpdate()
+    {
+      os_ << " DO UPDATE";
+
+      return std::move(*this);
+    }
+
+    ExecutCommandStream &&set(const std::initializer_list<Column> &columns)
+    {
+      os_ << " SET ";
+
+      bool isFirst = true;
+      for (const auto & column : columns)
+      {
+        if (column.str().empty()) {
+          continue;
+        }
+
+        os_ << column.str();
+
+        if (!isFirst)
+        {
+          os_ << ", ";
+        }
+
+        isFirst = false;
+      }
+
+      return std::move(*this);
+    }
+
+    ExecutCommandStream &&where(const ConditionalStream &&conditional_stream) && {
+      if (conditional_stream.empty()) {
+          return std::move(*this);
+      }
+
+      append(" Where ");
+      append(conditional_stream);
+
+      return std::move(*this);
   }
-};
+  };
 }
 
-#endif //EXECUT_COMMAND_STREAM_HPP
+#endif // EXECUT_COMMAND_STREAM_HPP
