@@ -33,7 +33,7 @@ include(FetchContent)
 FetchContent_Declare(
     cpp_sql_builder
     GIT_REPOSITORY https://github.com/nekzabirov/cpp_sql_builder.git
-    GIT_TAG main  # Use the latest version or specify a tag
+    GIT_TAG 1.0.0  # Use the latest version or specify a tag
 )
 FetchContent_MakeAvailable(cpp_sql_builder)
 
