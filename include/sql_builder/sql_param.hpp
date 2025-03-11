@@ -6,7 +6,6 @@
 #define SQL_PARAM_HPP
 
 #include <string>
-#include "column.hpp"
 
 namespace nek::sql {
     template<typename T>
@@ -31,11 +30,6 @@ namespace nek::sql {
     template<>
     inline std::string formatValue(const bool &value) {
         return value ? "TRUE" : "FALSE";
-    }
-
-    template<>
-    inline std::string formatValue(const Column &value) {
-        return value.str();
     }
 }
 
