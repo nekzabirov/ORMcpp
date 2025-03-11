@@ -131,12 +131,12 @@ namespace nek::sql
           continue;
         }
 
-        os_ << column.str();
-
         if (!isFirst)
         {
           os_ << ", ";
         }
+
+        os_ << column.str();
 
         isFirst = false;
       }
