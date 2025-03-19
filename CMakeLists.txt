@@ -3,7 +3,7 @@ project(sql_builder)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_executable(sql_builder
+add_library(sql_builder
         src/sql_stream.cpp
         src/column.cpp
         src/conditional.cpp
