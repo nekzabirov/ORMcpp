@@ -6,7 +6,9 @@
 #define COLUMN_HPP
 
 #include <numeric>
-
+#include <optional>
+#include <string>
+#include <format>
 #include "sql_stream.hpp"
 #include "conditional.hpp"
 
