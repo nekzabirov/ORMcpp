@@ -1,9 +1,9 @@
 //
-// Created by Nekbakht Zabirov on 15.10.2024.
+// Created by Nekbakht Zabirov on 12.03.2025.
 //
 
-#ifndef SQL_PARAM_HPP
-#define SQL_PARAM_HPP
+#ifndef FORMAT_VALUE_HPP
+#define FORMAT_VALUE_HPP
 
 #include <string>
 
@@ -28,9 +28,15 @@ namespace nek::sql {
     }
 
     template<>
+    inline std::string formatValue(const std::string_view &value) {
+        return "'" + std::string(value) + "'";
+    }
+
+    template<>
     inline std::string formatValue(const bool &value) {
         return value ? "TRUE" : "FALSE";
     }
 }
 
-#endif //SQL_PARAM_HPP
+
+#endif //FORMAT_VALUE_HPP
