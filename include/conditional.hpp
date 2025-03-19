@@ -16,7 +16,7 @@ namespace nek::sql
 
         Conditional&& operator&&(const Conditional&& right)
         {
-            if (empty())
+            if (right.empty())
             {
                 return std::move(*this);
             }
@@ -32,7 +32,7 @@ namespace nek::sql
 
         Conditional&& operator||(const Conditional&& right)
         {
-            if (empty())
+            if (right.empty())
             {
                 return std::move(*this);
             }

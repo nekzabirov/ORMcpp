@@ -23,19 +23,20 @@ namespace nek::sql
     ExecuteStream&& ExecuteStream::into(const std::string_view& table, std::initializer_list<std::string_view> columns) &&
     {
         append(" INTO ");
+        append(table);
 
-        append("(");
+        append(" (");
 
         for (auto it = columns.begin(); it != columns.end(); ++it)
         {
             append(*it);
             if (std::next(it) != columns.end())
             {
-                append(", ");
+                append(",");
             }
         }
 
-        append(")");
+        append(" )");
 
         return std::move(*this);
     }
