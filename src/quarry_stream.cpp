@@ -66,9 +66,16 @@ namespace nek::sql {
         return std::move(*this);
     }
 
-    QuarryStream &&QuarryStream::groupBy(const std::string_view &column) && {
+    QuarryStream &&QuarryStream::groupBy(const std::initializer_list<std::string_view>& columns) && {
         append(" GROUP BY ");
-        append(column);
+
+        for (auto it = columns.begin(); it != columns.end(); ++it) {
+            append(*it);
+            if (std::next(it) != columns.end()) {
+                append(", "); // Add separator if not the last key
+            }
+        }
+
         return std::move(*this);
     }
 

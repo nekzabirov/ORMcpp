@@ -29,7 +29,7 @@ namespace nek::sql
 
         QuarryStream&& offset(const int& offset) &&;
 
-        QuarryStream&& groupBy(const std::string_view& column) &&;
+        QuarryStream&& groupBy(const std::initializer_list<std::string_view>& columns) &&;
 
         QuarryStream&& leftJoin(const std::string_view& table, const std::string_view& as, const Conditional&& on) &&;
 

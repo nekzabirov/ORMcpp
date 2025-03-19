@@ -7,12 +7,20 @@
 
 #include "sql_stream.hpp"
 
-namespace nek::sql {
-    class Conditional : public SqlStream {
+namespace nek::sql
+{
+    class Conditional : public SqlStream
+    {
     public:
-        explicit Conditional(const std::string_view &value);
+        explicit Conditional(const std::string_view& value);
 
-        Conditional &&operator&&(const Conditional &&right) {
+        Conditional&& operator&&(const Conditional&& right)
+        {
+            if (empty())
+            {
+                return std::move(*this);
+            }
+
             std::ostringstream os;
 
             os << "(" << os_.str() << " AND " << right.os_.str() << ")";
@@ -22,7 +30,13 @@ namespace nek::sql {
             return std::move(*this);
         }
 
-        Conditional &&operator||(const Conditional &&right) {
+        Conditional&& operator||(const Conditional&& right)
+        {
+            if (empty())
+            {
+                return std::move(*this);
+            }
+
             std::ostringstream os;
 
             os << "(" << os_.str() << " OR " << right.os_.str() << ")";
