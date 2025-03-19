@@ -8,30 +8,34 @@
 #include "sql_stream.hpp"
 #include "conditional.hpp"
 
-namespace nek::sql {
-    class QuarryStream final : public SqlStream {
+namespace nek::sql
+{
+    class QuarryStream final : public SqlStream
+    {
     public:
-        explicit QuarryStream(const std::string_view &value);
+        explicit QuarryStream(const std::string_view& value);
 
-        static QuarryStream select(const std::initializer_list<std::string_view> &keys);
+        static QuarryStream select(const std::initializer_list<std::string_view>& keys);
 
-        QuarryStream&& from(const std::string_view &table) &&;
+        QuarryStream&& from(const std::string_view& table) &&;
 
-        QuarryStream&& where(const std::string_view &condition) &&;
+        QuarryStream&& from(const std::string_view& table, const std::string_view& as) &&;
 
-        QuarryStream&& orderBy(const std::string_view &column, const std::string_view &order) &&;
+        QuarryStream&& where(const Conditional& condition) &&;
 
-        QuarryStream&& limit(const int &limit) &&;
+        QuarryStream&& orderBy(const std::string_view& column, const std::string_view& order) &&;
 
-        QuarryStream&& offset(const std::string_view &offset) &&;
+        QuarryStream&& limit(const int& limit) &&;
 
-        QuarryStream&& groupBy(const std::string_view &column) &&;
+        QuarryStream&& offset(const int& offset) &&;
 
-        QuarryStream&& leftJoin(const std::string_view &table, const Conditional &&on) &&;
+        QuarryStream&& groupBy(const std::string_view& column) &&;
 
-        QuarryStream&& rightJoin(const std::string_view &table, const Conditional &&on) &&;
+        QuarryStream&& leftJoin(const std::string_view& table, const std::string_view& as, const Conditional&& on) &&;
 
-        QuarryStream&& innerJoin(const std::string_view &table, const Conditional &&on) &&;
+        QuarryStream&& rightJoin(const std::string_view& table, const std::string_view& as, const Conditional&& on) &&;
+
+        QuarryStream&& innerJoin(const std::string_view& table, const std::string_view& as, const Conditional&& on) &&;
     };
 }
 

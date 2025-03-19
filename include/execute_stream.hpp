@@ -4,13 +4,13 @@
 
 #ifndef EXECUTE_STREAM_HPP
 #define EXECUTE_STREAM_HPP
-#include <column.hpp>
-#include <sql_stream.hpp>
+#include "column.hpp"
+#include "sql_stream.hpp"
 
 namespace nek::sql {
     class ExecuteStream final : public SqlStream {
     public:
-        ExecuteStream();
+        ExecuteStream(const std::string_view &value);
 
         static ExecuteStream insert();
 
@@ -44,7 +44,7 @@ namespace nek::sql {
 
         ExecuteStream &&returning(const std::initializer_list<std::string_view> &columns) &&;
 
-        ExecuteStream &&where(const std::string_view &condition) &&;
+        ExecuteStream &&where(const Conditional &condition) &&;
 
         ExecuteStream &&onConflict(const std::initializer_list<std::string_view> &columns) &&;
 

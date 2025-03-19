@@ -26,6 +26,8 @@ namespace nek::sql {
 
         friend SqlStream &&operator<<(SqlStream &&left, const SqlStream &&right);
 
+        std::string str() const;
+
         std::string build() const;
 
     protected:
@@ -34,8 +36,6 @@ namespace nek::sql {
         void append(const std::string_view &str);
 
         void append(const SqlStream &other);
-
-        std::string str() const;
 
         bool empty() const;
     };

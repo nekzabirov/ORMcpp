@@ -30,7 +30,17 @@ namespace nek::sql {
         return std::move(*this);
     }
 
-    QuarryStream &&QuarryStream::where(const std::string_view &condition) && {
+    QuarryStream&& QuarryStream::from(const std::string_view& table, const std::string_view& as) &&
+    {
+        append(" FROM ");
+        append(table);
+        append(" AS ");
+        append(as);
+        return std::move(*this);
+    }
+
+
+    QuarryStream &&QuarryStream::where(const Conditional &condition) && {
         append(" WHERE ");
         append(condition);
         return std::move(*this);
@@ -50,9 +60,9 @@ namespace nek::sql {
         return std::move(*this);
     }
 
-    QuarryStream &&QuarryStream::offset(const std::string_view &offset) && {
+    QuarryStream &&QuarryStream::offset(const int &offset) && {
         append(" OFFSET ");
-        append(offset);
+        append(std::to_string(offset));
         return std::move(*this);
     }
 
@@ -62,25 +72,31 @@ namespace nek::sql {
         return std::move(*this);
     }
 
-    QuarryStream &&QuarryStream::leftJoin(const std::string_view &table, const Conditional &&on) && {
+    QuarryStream &&QuarryStream::leftJoin(const std::string_view &table, const std::string_view &as, const Conditional &&on) && {
         append(" LEFT JOIN ");
         append(table);
+        append(" AS ");
+        append(as);
         append(" ON ");
         append(on);
         return std::move(*this);
     }
 
-    QuarryStream &&QuarryStream::rightJoin(const std::string_view &table, const Conditional &&on) && {
+    QuarryStream &&QuarryStream::rightJoin(const std::string_view &table, const std::string_view &as, const Conditional &&on) && {
         append(" RIGHT JOIN ");
         append(table);
+        append(" AS ");
+        append(as);
         append(" ON ");
         append(on);
         return std::move(*this);
     }
 
-    QuarryStream &&QuarryStream::innerJoin(const std::string_view &table, const Conditional &&on) && {
+    QuarryStream &&QuarryStream::innerJoin(const std::string_view &table, const std::string_view &as, const Conditional &&on) && {
         append(" INNER JOIN ");
         append(table);
+        append(" AS ");
+        append(as);
         append(" ON ");
         append(on);
         return std::move(*this);
