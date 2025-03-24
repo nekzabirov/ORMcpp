@@ -11,6 +11,7 @@
 #include <format>
 #include "sql_stream.hpp"
 #include "conditional.hpp"
+#include <vector>
 
 namespace nek::sql
 {
@@ -102,6 +103,21 @@ namespace nek::sql
 
         template <class T>
         Conditional in(const std::initializer_list<T> values)
+        {
+            std::ostringstream query;
+
+            int index = 0;
+            query << std::accumulate(values.begin(), values.end(), std::string{},
+                                     [&index](const std::string& acc, const T& value)
+                                     {
+                                         return acc + (index++ > 0 ? ", " : "") + formatValue(value);
+                                     });
+
+            return Conditional(std::format("{} IN ({})", key, query.str()));
+        }
+
+        template <class T>
+        Conditional in(const std::vector<T> values)
         {
             std::ostringstream query;
 
