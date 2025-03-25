@@ -43,7 +43,7 @@ namespace nek::sql
 
             append(key);
             append(" = ");
-            append(formatValue(value));
+            append(formatValue(value.value()));
             return std::move(*this);
         }
 
