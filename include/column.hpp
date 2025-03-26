@@ -24,6 +24,15 @@ namespace nek::sql
         {
         }
 
+        static Conditional emptyCondition() {
+            return Conditional("");
+        }
+
+        static Column empty()
+        {
+            return Column("");
+        }
+
         template <typename T, std::enable_if_t<!std::is_same_v<T, Column>, int>  = 0>
         Column&& operator=(const T& value)
         {
