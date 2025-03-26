@@ -23,7 +23,13 @@ namespace nek::sql
 
             std::ostringstream os;
 
-            os << "(" << os_.str() << " AND " << right.os_.str() << ")";
+            if (empty())
+            {
+                os << right.os_.str();
+            } else
+            {
+                os << "(" << os_.str() << " AND " << right.os_.str() << ")";
+            }
 
             os_ = std::move(os);
 
@@ -39,7 +45,13 @@ namespace nek::sql
 
             std::ostringstream os;
 
-            os << "(" << os_.str() << " OR " << right.os_.str() << ")";
+            if (empty())
+            {
+                os << right.os_.str();
+            } else
+            {
+                os << "(" << os_.str() << " OR " << right.os_.str() << ")";
+            }
 
             os_ = std::move(os);
 
