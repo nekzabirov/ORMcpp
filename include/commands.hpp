@@ -24,6 +24,10 @@ namespace nek::sql {
     static ExecuteStream update(const std::string_view &table) {
       return ExecuteStream::update(table);
     }
+
+    static ExecuteStream deleteFrom(const std::string_view &table) {
+        return ExecuteStream::Delete(table);
+    }
 }
 
 #endif //COMMANDS_HPP
