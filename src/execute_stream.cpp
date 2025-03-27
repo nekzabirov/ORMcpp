@@ -20,6 +20,11 @@ namespace nek::sql
         return ExecuteStream("UPDATE " + std::string(table));
     }
 
+    ExecuteStream ExecuteStream::Delete(const std::string_view& table)
+    {
+        return ExecuteStream("DELETE FROM " + std::string(table));
+    }
+
     ExecuteStream&& ExecuteStream::into(const std::string_view& table, std::initializer_list<std::string_view> columns) &&
     {
         append(" INTO ");

@@ -16,6 +16,8 @@ namespace nek::sql {
 
         static ExecuteStream update(const std::string_view &table);
 
+        static ExecuteStream Delete(const std::string_view &table);
+
         ExecuteStream &&into(const std::string_view &table, std::initializer_list<std::string_view> columns) &&;
 
         template<class... T>
