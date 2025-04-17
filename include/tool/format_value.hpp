@@ -46,16 +46,14 @@ namespace nek::sql
     }
 
     template <typename T>
-    constexpr std::string formatValue(const std::optinal<T>& value)
+    constexpr std::string formatValue(const std::optional<T>& value)
     {
         if (!value)
         {
             return "NULL";
         }
-        else
-        {
-            return formatValue(value);
-        }
+
+        return formatValue(value.value());
     }
 }
 
