@@ -6,35 +6,56 @@
 #define FORMAT_VALUE_HPP
 
 #include <string>
+#include <optional>
 
-namespace nek::sql {
-    template<typename T>
-    constexpr std::string formatValue(const T &value) {
+namespace nek::sql
+{
+    template <typename T>
+    constexpr std::string formatValue(const T& value)
+    {
         return std::to_string(value);
     }
 
-    inline std::string formatValue(const char *value) {
+    inline std::string formatValue(const char* value)
+    {
         return std::string("'") + value + "'";
     }
 
-    template<>
-    inline std::string formatValue(const char *const&value) {
+    template <>
+    inline std::string formatValue(const char* const& value)
+    {
         return std::string("'") + value + "'";
     }
 
-    template<>
-    inline std::string formatValue(const std::string &value) {
+    template <>
+    inline std::string formatValue(const std::string& value)
+    {
         return "'" + value + "'";
     }
 
-    template<>
-    inline std::string formatValue(const std::string_view &value) {
+    template <>
+    inline std::string formatValue(const std::string_view& value)
+    {
         return "'" + std::string(value) + "'";
     }
 
-    template<>
-    inline std::string formatValue(const bool &value) {
+    template <>
+    inline std::string formatValue(const bool& value)
+    {
         return value ? "TRUE" : "FALSE";
+    }
+
+    template <typename T>
+    constexpr std::string formatValue(const std::optinal<T>& value)
+    {
+        if (!value)
+        {
+            return "NULL";
+        }
+        else
+        {
+            return formatValue(value);
+        }
     }
 }
 
