@@ -7,6 +7,7 @@
 
 #include <string>
 #include <optional>
+#include <chrono>
 
 namespace nek::sql
 {
@@ -43,6 +44,16 @@ namespace nek::sql
     inline std::string formatValue(const bool& value)
     {
         return value ? "TRUE" : "FALSE";
+    }
+
+    template <>
+    inline std::string formatValue(const std::chrono::system_clock::time_point& value)
+    {
+        auto time_t_value = std::chrono::system_clock::to_time_t(value);
+        std::tm* tm_value = std::localtime(&time_t_value);
+        char buffer[20];
+        std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tm_value);
+        return std::string(buffer);
     }
 
     template <typename T>
