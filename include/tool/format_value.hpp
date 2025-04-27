@@ -8,6 +8,8 @@
 #include <string>
 #include <optional>
 #include <chrono>
+#include <vector>
+#include <sstream>
 
 namespace nek::sql
 {
@@ -66,7 +68,23 @@ namespace nek::sql
 
         return formatValue(value.value());
     }
-}
 
+    template <>
+    inline std::string formatValue(const std::vector<std::string>& value)
+    {
+        std::stringstream ss;
+
+        for (const auto & v : value)
+        {
+            ss << v;
+            if (v != value.back())
+            {
+                ss << ", ";
+            }
+        }
+
+        return ss.str();
+    }
+}
 
 #endif //FORMAT_VALUE_HPP
