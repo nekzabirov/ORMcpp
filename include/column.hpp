@@ -101,13 +101,13 @@ namespace nek::sql
         template <typename T, std::enable_if_t<!std::is_same_v<T, Column>, int>  = 0>
         Conditional like(const T& value)
         {
-            return Conditional(std::format("{} LIKE {}", key, formatValue(value)));
+            return Conditional(std::format("{} ILIKE {}", key, formatValue(value)));
         }
 
         template <typename T, std::enable_if_t<!std::is_same_v<T, Column>, int>  = 0>
         Conditional like(const std::optional<T>& value)
         {
-            return Conditional(value ? std::format("{} LIKE {}", key, formatValue(value.value())) : "");
+            return Conditional(value ? std::format("{} ILIKE {}", key, formatValue(value.value())) : "");
         }
 
         template <class T>
