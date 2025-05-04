@@ -74,6 +74,8 @@ namespace nek::sql
     {
         std::stringstream ss;
 
+    	ss << "\"";
+
         for (const auto & v : value)
         {
             ss << v;
@@ -82,6 +84,8 @@ namespace nek::sql
                 ss << ", ";
             }
         }
+
+    	ss << "\"";
 
         return ss.str();
     }
