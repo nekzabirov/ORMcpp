@@ -102,22 +102,20 @@ namespace nek::sql
     template <>
     inline std::string formatValue(const std::vector<std::string>& value)
     {
-        std::stringstream ss;
-
-    	ss << "'";
-
-        for (const auto & v : value)
-        {
-            ss << v;
-            if (v != value.back())
-            {
-                ss << ", ";
-            }
-        }
-
-    	ss << "'";
-
-        return ss.str();
+    	std::string array_str = "{";
+    	for (size_t i = 0; i < value.size(); ++i) {
+    		if (i > 0) array_str += ",";
+    		// Escape quotes in language names if they exist
+    		std::string escaped_lang = value[i];
+    		size_t pos = 0;
+    		while ((pos = escaped_lang.find('\"', pos)) != std::string::npos) {
+    			escaped_lang.insert(pos, "\\");
+    			pos += 2;
+    		}
+    		array_str += "\"" + escaped_lang + "\"";
+    	}
+    	array_str += "}";
+    	return array_str;
     }
 }
 
