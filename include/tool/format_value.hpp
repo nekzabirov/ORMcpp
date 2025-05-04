@@ -33,13 +33,43 @@ namespace nek::sql
     template <>
     inline std::string formatValue(const std::string& value)
     {
-        return "'" + value + "'";
+    	std::stringstream result;
+
+    	result << "'";
+    	for (const char& c : value)
+    	{
+    		if (c == '\'')
+    		{
+    			result << "`";
+    		} else
+    		{
+    			result << c;
+    		}
+    	}
+    	result << "'";
+
+        return result.str();
     }
 
     template <>
     inline std::string formatValue(const std::string_view& value)
     {
-        return "'" + std::string(value) + "'";
+    	std::stringstream result;
+
+    	result << "'";
+    	for (const char& c : value)
+    	{
+    		if (c == '\'')
+    		{
+    			result << "`";
+    		} else
+    		{
+    			result << c;
+    		}
+    	}
+    	result << "'";
+
+    	return result.str();
     }
 
     template <>
