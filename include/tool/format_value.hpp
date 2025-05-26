@@ -8,6 +8,7 @@
 #include <string>
 #include <optional>
 #include <chrono>
+#include <iomanip>
 #include <vector>
 #include <sstream>
 
@@ -81,11 +82,10 @@ namespace nek::sql
     template <>
     inline std::string formatValue(const std::chrono::system_clock::time_point& value)
     {
-        auto time_t_value = std::chrono::system_clock::to_time_t(value);
-        std::tm* tm_value = std::localtime(&time_t_value);
-        char buffer[20];
-        std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tm_value);
-        return std::string(buffer);
+	    const std::time_t t = std::chrono::system_clock::to_time_t(value);
+	    std::stringstream ss;
+	    ss << std::put_time(std::gmtime(&t), "'%Y-%m-%d %H:%M:%S UTC'");
+	    return ss.str();
     }
 
     template <typename T>
