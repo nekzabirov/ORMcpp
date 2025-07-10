@@ -8,26 +8,43 @@
 #include "quarry_stream.hpp"
 #include "execute_stream.hpp"
 
-namespace nek::sql {
-    static Column column(const std::string_view &key) {
-        return Column(key);
-    }
+namespace nek::sql
+{
+static Column
+column(const std::string_view& key)
+{
+    return Column(key);
+}
 
-    static QuarryStream select(const std::initializer_list<std::string_view> &keys) {
-      return QuarryStream::select(keys);
-    }
+static QuarryStream
+select(const std::initializer_list<std::string_view>& keys)
+{
+    return QuarryStream::select(keys);
+}
 
-    static ExecuteStream insert() {
-      return ExecuteStream::insert();
-    }
+static QuarryStream
+select(const std::vector<std::string>& keys)
+{
+    return QuarryStream::select(keys);
+}
 
-    static ExecuteStream update(const std::string_view &table) {
-      return ExecuteStream::update(table);
-    }
+static ExecuteStream
+insert()
+{
+    return ExecuteStream::insert();
+}
 
-    static ExecuteStream deleteFrom(const std::string_view &table) {
-        return ExecuteStream::Delete(table);
-    }
+static ExecuteStream
+update(const std::string_view& table)
+{
+    return ExecuteStream::update(table);
+}
+
+static ExecuteStream
+deleteFrom(const std::string_view& table)
+{
+    return ExecuteStream::Delete(table);
+}
 }
 
 #endif //COMMANDS_HPP
