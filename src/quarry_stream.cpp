@@ -70,6 +70,11 @@ QuarryStream::from(const std::string_view& table, const std::string_view& as) &&
 QuarryStream&&
 QuarryStream::where(const Conditional& condition) &&
 {
+    if (condition.empty())
+    {
+        return std::move(*this);
+    }
+
     append(" WHERE ");
     append(condition);
     return std::move(*this);

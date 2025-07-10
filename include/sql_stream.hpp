@@ -30,7 +30,6 @@ namespace nek::sql {
 
         std::string build() const;
 
-    protected:
         std::ostringstream os_;
 
         void append(const std::string_view &str);
